@@ -6,7 +6,7 @@ const emit = defineEmits<{
   (e: "resetar"): void;
 }>();
 const prop = defineProps({
-  matrix: {
+  board: {
     type: Array as PropType<Array<ColJogoDaVelha[]>>,
     required: true,
   },
@@ -27,7 +27,7 @@ const prop = defineProps({
     </div>
     <div><button @click="emit('resetar')">Resetar</button></div>
     <div class="grid">
-      <div class="row" v-for="(row, indexRow) in prop.matrix" :key="indexRow">
+      <div class="row" v-for="(row, indexRow) in prop.board" :key="indexRow">
         <div
           v-for="(col, indexCol) in row"
           :class="{

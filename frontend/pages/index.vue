@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CanvasJogoDaVelha :ganhador="ganhador" :jogadorAtual="jogadorAtual" :matrix="matrix" @selecionou-celula="setarJogada" @resetar="resetar" />
+    <CanvasJogoDaVelha :ganhador="ganhador" :jogadorAtual="jogadorAtual" :board="matrix" @selecionou-celula="setarJogada" @resetar="resetar" />
   </div>
 </template>
 <script setup lang="ts">
