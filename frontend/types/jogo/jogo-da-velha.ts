@@ -1,3 +1,5 @@
 export interface IColJogoDaVelha {
-  selecionado?: "X" | "O";
+  selecionado?: ValorColSelecionado;
 }
+
+export type ValorColSelecionado = "X" | "O";

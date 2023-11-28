@@ -1,6 +1,7 @@
 import type { ColJogoDaVelha } from "~/components/jogo-vela/types";
+import { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 
-let scores = {
+const scores = {
   X: 10,
   O: -10,
   empate: 0,
@@ -8,8 +9,8 @@ let scores = {
 
 export const useBestMove = (
   board: Array<ColJogoDaVelha[]>,
-  ai: "X" | "O",
-  human: "X" | "O"
+  ai: ValorColSelecionado,
+  human: ValorColSelecionado
 ) => {
 
   scores[ai] = 10;
@@ -37,8 +38,8 @@ const minimax = (
   board: Array<ColJogoDaVelha[]>,
   depth: number,
   isMaximizing: boolean,
-  ai: "X" | "O",
-  human: "X" | "O"
+  ai: ValorColSelecionado,
+  human: ValorColSelecionado
 ) => {
   let result = useGetWin(board);
   if (result === "empate") {
