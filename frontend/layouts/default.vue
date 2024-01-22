@@ -1,15 +1,13 @@
 <template>
   <div>
     <header>
-       <nav>
+      <nav>
         <h2>Welcome to the homepage</h2>
       </nav>
-  </header>
+    </header>
     <main>
       <slot />
     </main>
-    <footer>
-      2023
-    </footer>
+    <footer>2023</footer>
   </div>
 </template>

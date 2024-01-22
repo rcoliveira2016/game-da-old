@@ -2,7 +2,7 @@
 import { PropType } from "vue";
 import { ColJogoDaVelha, ColSelecionadoEvent } from "./types";
 import BoardJogoDaVelha from "./BoardJogoDaVelha.vue";
-import { ColJogoDaVelhaValor } from "~/types/jogo/jogo-da-velha";
+import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 const emit = defineEmits<{
   (e: "selecionou-celula", event: ColSelecionadoEvent): void;
   (e: "resetar"): void;
@@ -13,7 +13,7 @@ const prop = defineProps({
     required: true,
   },
   jogadorAtual: {
-    type: String as PropType<ColJogoDaVelhaValor>,
+    type: String as PropType<ValorColSelecionado>,
     required: true,
   },
   ganhador: {
@@ -41,5 +41,6 @@ const prop = defineProps({
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 400px;
 }
 </style>
