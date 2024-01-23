@@ -38,7 +38,7 @@ export const useManegerJogoDaVelha = () => {
     if (ganhador.value) return;
 
     board.value[indexRow][indexCol].selecionado = jogadorAtual.value;
-    jogadorAtual.value = jogadorAtual.value === "X" ? "O" : "X";
+    jogadorAtual.value = toogle(jogadorAtual.value);
 
     if (jogadas >= 5) {
       const win = useGetWin(board.value);
@@ -62,14 +62,15 @@ export const useManegerJogoDaVelha = () => {
   };
 
   const setarPlayerIA = () => {
-    if (possuiJogadorIA()) {
-      jogadorAtual.value = iaPlayer.value === "X" ? "O" : "X";
-      if (iaPlayer.value === "X") setarJogadaIA();
+    if (!possuiJogadorIA()) return;
+
+    if (iaPlayer.value === "X") {
+      setarJogadaIA();
     }
   };
 
   const jogadorHumano = () => {
-    return iaPlayer.value === "X" ? "O" : "X";
+    return iaPlayer.value === "" ? "X" : toogle(iaPlayer.value as ValorColSelecionado);
   };
 
   const iniciar = () => {
@@ -80,6 +81,11 @@ export const useManegerJogoDaVelha = () => {
     resetar();
   })
 
+  const toogle = (value: Ref<ValorColSelecionado> | ValorColSelecionado) => {
+    const realValue = typeof value === "string" ? value : value.value;
+
+    return realValue === "X" ? "O" : "X";
+  }
   return {
     board,
     jogadorAtual,
