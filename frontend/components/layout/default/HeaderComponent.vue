@@ -30,7 +30,6 @@
   margin-left: var(--spacing-md);
   list-style: none;
   display: flex;
-  gap: var(--spacing-sm);
 }
 
 .layout-header nav ul li {
@@ -38,7 +37,7 @@
   text-align: center;
   display: flex;
   align-items: center;
-  padding: 0 0.3rem;
+  padding: 0 0.5rem;
 }
 .layout-header nav ul li a {
   vertical-align: bottom;

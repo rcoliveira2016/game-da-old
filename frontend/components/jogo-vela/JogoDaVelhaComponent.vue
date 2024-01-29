@@ -22,7 +22,7 @@ const prop = defineProps({
 });
 </script>
 <template>
-  <div class="container">
+  <div class="container" tabindex="0" atl="tabuleiro do jogo da velha">
     <div>Jogador Atual: {{ jogadorAtual }}</div>
     <div v-if="ganhador">
       <div>Ganhador: {{ ganhador.selecionado }}</div>

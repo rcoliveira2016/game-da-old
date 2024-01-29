@@ -10,6 +10,26 @@ const prop = defineProps({
     required: true,
   },
 });
+
+const classCol = (col: ColJogoDaVelha) => {
+  return {
+    col: true,
+    'col--selecionado-x': col.selecionado === 'X',
+    'col--selecionado-o': col.selecionado === 'O',
+  };
+}
+const textoAcessibilidadeCol = (indexRow: number, indexCol: number) => {
+  return `linha ${indexRow + 1}, coluna ${indexCol + 1}`
+}
+onMounted(() => {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      if (!document?.activeElement) return;
+      if ('click' in document?.activeElement)
+        (document.activeElement as HTMLDivElement).click()
+    }
+  })
+})
 </script>
 <template>
   <div class="bord-container">
@@ -17,12 +37,10 @@ const prop = defineProps({
       <div class="row" v-for="(row, indexRow) in prop.board" :key="indexRow">
         <div
           v-for="(col, indexCol) in row"
-          :class="{
-            col: true,
-            'col--selecionado-x': col.selecionado === 'X',
-            'col--selecionado-o': col.selecionado === 'O',
-          }"
+          tabindex="0"
+          :class="classCol(col)"
           :key="indexCol"
+          :alt="textoAcessibilidadeCol(indexRow, indexCol)"
           @click="emit('selecionou-celula', {col: col, indexRow: indexRow, indexCol: indexCol})"
         >
           <div>{{ col.selecionado }}</div>
