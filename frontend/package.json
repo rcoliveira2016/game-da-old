@@ -16,6 +16,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@microsoft/signalr": "^8.0.0"
+    "@microsoft/signalr": "^8.0.0",
+    "@types/dom-speech-recognition": "^0.0.4"
   }
 }

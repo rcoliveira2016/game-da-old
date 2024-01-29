@@ -75,6 +75,7 @@ export const useManegerJogoDaVelha = () => {
 
   const iniciar = () => {
     setarPlayerIA();
+    ouvirCamandosVoz();
   };
 
   watch(iaPlayer, () => {
@@ -86,6 +87,41 @@ export const useManegerJogoDaVelha = () => {
 
     return realValue === "X" ? "O" : "X";
   }
+
+  const ouvirCamandosVoz = () => {
+    const canalEventoVoz = useEventSpeechRecognition();
+    canalEventoVoz.adicionarEventos((texto) => {
+      console.log(texto);
+      if (!validarComandoVoz(texto)) return;
+
+      const objetoJogadaVoz = parserVozJogada(texto);
+      setarJogada({
+        col: board.value[objetoJogadaVoz.linha - 1][objetoJogadaVoz.coluna - 1],
+        indexCol: objetoJogadaVoz.coluna - 1,
+        indexRow: objetoJogadaVoz.linha - 1,
+      })
+    })
+  }
+
+  const parserVozJogada = (texto: string) => {
+    const incioTextoComandoJogada = texto.substring(texto.indexOf("jogar")).toLowerCase();
+    const textosSepadados = incioTextoComandoJogada.split(' ');
+    const indexLinha = textosSepadados.indexOf("linha");
+    const valorLinha = textosSepadados[indexLinha + 1];
+
+    const indexColuna = textosSepadados.indexOf("coluna");
+    const valorColuna = textosSepadados[indexColuna + 1];
+
+    return {
+      linha: parseInt(valorLinha),
+      coluna: parseInt(valorColuna),
+    }
+  }
+
+  const validarComandoVoz = (texto: string) => {
+    return texto.includes('jogar') && texto.includes('linha') && texto.includes('coluna');
+  }
+
   return {
     board,
     jogadorAtual,
