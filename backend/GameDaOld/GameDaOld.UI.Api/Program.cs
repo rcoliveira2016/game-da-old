@@ -1,4 +1,5 @@
 using GameDaOld.UI.Api.Hubs;
+using Microsoft.AspNetCore.Http.Connections;
 var SignalROrigins = "_signalROrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
@@ -18,6 +19,8 @@ var app = builder.Build();
 app.UseRouting();
 app.UseCors(SignalROrigins);
 app.MapGet("/", () => "Hello World!");
-app.MapHub<JogoDaVelhaHub>("/JogoDaVelhaHub");
+app.MapHub<JogoDaVelhaHub>("/JogoDaVelhaHub", opt=>{
+    opt.Transports = HttpTransportType.WebSockets;
+});
 
 app.Run();

@@ -11,8 +11,9 @@ import * as signalR from "@microsoft/signalr";
 const username = (new Date()).getTime().toString();
 const mensagem = ref("");
 const tbMessage = ref("");
+const port = 5023;
 const connection = new signalR.HubConnectionBuilder()
-  .withUrl("https://localhost:7016/JogoDaVelhaHub", {
+  .withUrl(`http://localhost:${port}/JogoDaVelhaHub`, {
     transport: signalR.HttpTransportType.WebSockets
   }
 )
