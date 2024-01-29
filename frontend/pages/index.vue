@@ -7,6 +7,9 @@
       <option value="X">O vs IA</option>
     </select>
   </div>
+  <div>
+    <input type="checkbox" v-model="usarVoz"> usar comando de voz
+  </div>
   <div v-if="iaPlayer">
     AI: {{ iaPlayer }}
   </div>
@@ -16,7 +19,7 @@
 </template>
 <script setup lang="ts">
 import JogoDaVelhaComponent from '@/components/jogo-vela/JogoDaVelhaComponent.vue';
-const { board, jogadorAtual, ganhador, iaPlayer, setarJogada, resetar, iniciar } = useManegerJogoDaVelha();
+const { board, jogadorAtual, ganhador, iaPlayer, usarVoz, setarJogada, resetar, iniciar } = useManegerJogoDaVelha();
 onMounted(() => {
   iniciar();
 })
