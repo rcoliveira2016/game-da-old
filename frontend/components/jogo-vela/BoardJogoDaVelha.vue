@@ -12,7 +12,7 @@ const prop = defineProps({
 });
 </script>
 <template>
-  <div class="container">
+  <div class="bord-container">
     <div class="grid">
       <div class="row" v-for="(row, indexRow) in prop.board" :key="indexRow">
         <div
@@ -32,7 +32,7 @@ const prop = defineProps({
   </div>
 </template>
 <style scoped>
-.container{
+.bord-container{
   width: 18em;
 }
 .grid {

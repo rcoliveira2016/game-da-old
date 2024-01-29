@@ -36,11 +36,12 @@ const prop = defineProps({
 <style scoped>
 .container {
   font-size: 16px;
-  border: 1px solid black;
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 400px;
+  border: 1px solid #000;
+  border-radius: 0.4rem;
 }
 </style>
