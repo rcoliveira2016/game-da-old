@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis
+    command: redis-server --requirepass Redis2019!
+    ports:
+      - "6379:6379"
+
+  GameDaOld.UI.Api:
+    image: gamedaolduiapi
+    build:
+      context: ./backend/GameDaOld
+      dockerfile: ./GameDaOld.UI.Api/Dockerfile
+    #environment:
+      #- ASPNETCORE_URLS=http://+:5023
+    ports:
+      - "5023:8080"
+  
+  nuxt_app:
+    image: nuxt_app
+    build:
+      context: ./frontend/
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    
