@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { ColJogoDaVelha, ColSelecionadoEvent } from "./types";
+import type { ColJogoDaVelha, ColSelecionadoEvent } from "~~/components/jogo-vela/types";
 import BoardJogoDaVelha from "./BoardJogoDaVelha.vue";
 import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 const emit = defineEmits<{
@@ -27,7 +26,7 @@ const prop = defineProps({
     <div v-if="ganhador">
       <div>Ganhador: {{ ganhador.selecionado }}</div>
     </div>
-    <div><button @click="emit('resetar')">Resetar</button></div>
+    <div><BtnComponent @click="emit('resetar')">Resetar</BtnComponent></div>
     <div class="container-board">
       <BoardJogoDaVelha :board="prop.board" @selecionou-celula="emit('selecionou-celula', $event)" />
     </div>  

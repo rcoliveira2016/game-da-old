@@ -3,7 +3,7 @@
     <p>recebidas: {{mensagem}}</p>
   </section>
   <section>
-    <p>texto: <input type="text" v-model="tbMessage"><button @click="send">enviar</button> </p>
+    <p>texto: <InputText v-model="tbMessage" /> <button @click="send">enviar</button> </p>
   </section>
 </template>
 <script setup lang="ts">

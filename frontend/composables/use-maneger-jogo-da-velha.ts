@@ -1,10 +1,10 @@
-import {
+import type {
   ColJogoDaVelha,
   ColSelecionadoEvent,
-} from "~/components/jogo-vela/types";
+} from "~~/components/jogo-vela/types";
 import { useGetWin } from "./use-get-win";
 import { useBestMove } from "./use-maxmin-jogo-da-velha";
-import { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
+import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 
 export const useManegerJogoDaVelha = () => {
   const matrixDefault = () => [

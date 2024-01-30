@@ -1,7 +1,7 @@
 <template>
   <header class="layout-header">
     <nav>
-      <h1 class="title">Jogo da velha</h1>
+      <h1 class="title"><NuxtLink to="/">Jogo da velha</NuxtLink></h1>
       <ul>
         <li><NuxtLink to="/about">sobre</NuxtLink></li>
         <li><NuxtLink to="/online">online</NuxtLink></li>
@@ -25,6 +25,12 @@
   padding-left: var(--spacing-md);
   font-size: 1.5rem;
 }
+
+.layout-header nav h1 a{
+  text-decoration: none;
+  color: inherit;
+}
+
 
 .layout-header nav ul {
   margin-left: var(--spacing-md);

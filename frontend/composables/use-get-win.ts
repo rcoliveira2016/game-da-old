@@ -1,4 +1,6 @@
-import { ColJogoDaVelha } from "~/components/jogo-vela/types";
+import type {
+  ColJogoDaVelha,
+} from "~~/components/jogo-vela/types";
 
 export const useGetWin = (
   tabuleiro: Array<ColJogoDaVelha[]>

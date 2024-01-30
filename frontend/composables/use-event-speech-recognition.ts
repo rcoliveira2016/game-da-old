@@ -1,3 +1,4 @@
+
 type FnString = (texto: string) => void;
 
 export type EventSpeechRecognition = {

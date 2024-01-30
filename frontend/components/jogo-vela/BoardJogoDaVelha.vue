@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import { ColJogoDaVelha, ColSelecionadoEvent } from "./types";
+import type { ColJogoDaVelha, ColSelecionadoEvent } from "~~/components/jogo-vela/types";
 const emit = defineEmits<{
   (e: "selecionou-celula", event: ColSelecionadoEvent): void;
 }>();

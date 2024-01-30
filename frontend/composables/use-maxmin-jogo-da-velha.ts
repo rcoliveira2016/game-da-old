@@ -1,5 +1,5 @@
 import type { ColJogoDaVelha } from "~/components/jogo-vela/types";
-import { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
+import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 
 const scores = {
   X: 10,
