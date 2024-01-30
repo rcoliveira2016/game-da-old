@@ -4,8 +4,10 @@ namespace GameDaOld.UI.Api.Hubs;
 
 public class JogoDaVelhaHub : Hub
 {
-    public async Task SendMessage(string user, string message)
+    public async Task SendMessage(JogoDaVelhaHubInputModel jogadaInpitModel)
     {
-        await Clients.All.SendAsync("ReceiveMessage", user, message);
+        jogadaInpitModel.IndexLinha = 3;
+        jogadaInpitModel.IndexColuna = 3;
+        await Clients.All.SendAsync("ReceiveMessage", jogadaInpitModel);
     }
 }

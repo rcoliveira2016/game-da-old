@@ -8,7 +8,13 @@
 </template>
 <script setup lang="ts">
 import * as signalR from "@microsoft/signalr";
-const username = (new Date()).getTime().toString();
+
+
+interface JogoDaVelhaHubInputModel{
+  indexLinha: number;
+  indexColuna: number;
+}
+
 const mensagem = ref("");
 const tbMessage = ref("");
 const port = 5023;
@@ -19,20 +25,16 @@ const connection = new signalR.HubConnectionBuilder()
 )
     .build();
 
-connection.on("ReceiveMessage", (username: string, message: string) => {
-  console.log(message);
-  mensagem.value += message;
-});
-
-connection.on("ReceiveMessageTeste", (message: string) => {
-  console.log(message);
+connection.on("ReceiveMessage", (jogada: JogoDaVelhaHubInputModel) => {
+  console.log(jogada);
+  mensagem.value += JSON.stringify(jogada);
 });
 
 connection.start().catch((err) => console.log(err));
 
 
 function send() {
-  connection.invoke("SendMessage", username, tbMessage.value)
+  connection.invoke("SendMessage", { indexColuna:0, indexLinha: 1} satisfies JogoDaVelhaHubInputModel)
     .then(() => (tbMessage.value = ""));
 }
 </script>
