@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http.Connections;
 var SignalROrigins = "_signalROrigins";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: SignalROrigins,
@@ -15,6 +14,7 @@ builder.Services.AddCors(options =>
                           policy.AllowCredentials();
                       });
 });
+builder.Services.AddInjecoesDepedencias();
 var app = builder.Build();
 
 app.UseRouting();
