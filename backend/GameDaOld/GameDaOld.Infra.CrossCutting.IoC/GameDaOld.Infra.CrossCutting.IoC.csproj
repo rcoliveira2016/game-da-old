@@ -9,5 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameDaOld.Aplication\GameDaOld.Aplication.csproj" />
+    <ProjectReference Include="..\GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj" />
   </ItemGroup>
 </Project>

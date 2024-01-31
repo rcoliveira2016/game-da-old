@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Aplication", "Gam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Infra.CrossCutting.IoC", "GameDaOld.Infra.CrossCutting.IoC\GameDaOld.Infra.CrossCutting.IoC.csproj", "{3B1172BF-AC98-4FD7-9328-39B79AB36259}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Infra.Integration.CacheService", "GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj", "{2B7DC93A-A544-4874-9515-5B36BD49D00A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3B1172BF-AC98-4FD7-9328-39B79AB36259}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B1172BF-AC98-4FD7-9328-39B79AB36259}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B1172BF-AC98-4FD7-9328-39B79AB36259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

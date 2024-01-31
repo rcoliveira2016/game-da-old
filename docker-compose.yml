@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   redis:
-    image: redis
-    command: redis-server --requirepass Redis2019!
+    image: redis:alpine
+    command: redis-server
     ports:
       - "6379:6379"
 
-  GameDaOld.UI.Api:
+  gamedaold_ui_api:
     image: gamedaolduiapi
     build:
       context: ./backend/GameDaOld
@@ -16,6 +16,8 @@ services:
       #- ASPNETCORE_URLS=http://+:5023
     ports:
       - "5023:8080"
+    depends_on:
+      - redis
   
   nuxt_app:
     image: nuxt_app
