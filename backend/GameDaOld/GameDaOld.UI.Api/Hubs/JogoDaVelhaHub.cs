@@ -1,4 +1,5 @@
-﻿using GameDaOld.Aplication.JogoDaVelha;
+﻿using GameDaOld.Aplication;
+using GameDaOld.Aplication.JogoDaVelha;
 using GameDaOld.Infra.Integration.CacheService;
 using Microsoft.AspNetCore.SignalR;
 
@@ -13,12 +14,23 @@ public class JogoDaVelhaHub : Hub
         _jogoDaVelhaAppService = jogoDaVelhaAppService;
         _cacheService = cacheService;
     }
-    public async Task SendMessage(JogoDaVelhaHubInputModel jogadaInpitModel)
+
+    public async Task IniciarJogo()
+    {        
+        var identificador = Guid.NewGuid().ToString();
+        _jogoDaVelhaAppService.IniciarJogo(this.Context.ConnectionId, identificador);
+        await Groups.AddToGroupAsync(this.Context.ConnectionId, identificador);
+        await Clients.Group(identificador).SendAsync("JogoIniciado", identificador);
+    }
+
+    public async Task AdicionarJogador(string identificador){
+        await Groups.AddToGroupAsync(this.Context.ConnectionId, identificador);
+        _jogoDaVelhaAppService.AdicionarJogador(this.Context.ConnectionId, identificador);
+        await Clients.Group(identificador).SendAsync("JogoIniciado", identificador);
+    }
+
+    public async Task Jogar(int linha, int coluna)
     {
-        _cacheService.SetString("Teste", "Teste");
-        _jogoDaVelhaAppService.Teste();
-        jogadaInpitModel.IndexLinha = 3;
-        jogadaInpitModel.IndexColuna = 3;
-        await Clients.All.SendAsync("ReceiveMessage", jogadaInpitModel);
+        
     }
 }

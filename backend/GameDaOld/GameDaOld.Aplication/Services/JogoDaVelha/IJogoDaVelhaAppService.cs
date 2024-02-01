@@ -2,5 +2,7 @@
 
 public interface IJogoDaVelhaAppService
 {
-    void Teste();
+    void AdicionarJogador(string identificador, string jogadorID);
+    void IniciarJogo(string identificador, string jogadorID);
+    void Jogar(string identificador, string jogadorID, int linha, int coluna);
 }

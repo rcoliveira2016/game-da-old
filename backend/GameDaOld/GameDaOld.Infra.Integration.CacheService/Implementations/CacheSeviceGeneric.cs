@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using MessagePack;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace GameDaOld.Infra.Integration.CacheService;
 
@@ -22,9 +23,10 @@ public class CacheSeviceGeneric : ICacheService
         _distributedCache.SetString(key, value);
     }
 
-    public void Add<T>(string key, T value)
+    public void SetSerializable<T>(string key, T value)
     {
-        throw new NotImplementedException();
+        byte[] bytes = MessagePackSerializer.Serialize(value);
+        _distributedCache.Set(key, bytes);
     }
 
     public void Remove(string key)
@@ -32,8 +34,9 @@ public class CacheSeviceGeneric : ICacheService
         throw new NotImplementedException();
     }
 
-    public void Update(string key, string value)
+    public T GetSerializable<T>(string key)
     {
-        throw new NotImplementedException();
+        var bytes = _distributedCache.Get(key);
+        return MessagePackSerializer.Deserialize<T>(bytes);
     }
 }
