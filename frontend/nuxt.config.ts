@@ -15,5 +15,6 @@ export default defineNuxtConfig({
     dirs: [
       'composables/**'
     ]
-  }
+  },
+  modules: ['@pinia/nuxt'],
 })

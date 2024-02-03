@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.0",
-    "@types/dom-speech-recognition": "^0.0.4"
+    "@pinia/nuxt": "^0.5.1",
+    "@types/dom-speech-recognition": "^0.0.4",
+    "pinia": "^2.1.7"
   }
 }

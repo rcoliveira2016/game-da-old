@@ -37,6 +37,7 @@ public class CacheSeviceGeneric : ICacheService
     public T GetSerializable<T>(string key)
     {
         var bytes = _distributedCache.Get(key);
+        if(bytes == null) return default(T);
         return MessagePackSerializer.Deserialize<T>(bytes);
     }
 }
