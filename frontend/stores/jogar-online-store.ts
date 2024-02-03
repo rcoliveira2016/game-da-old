@@ -1,27 +1,17 @@
 import type { ColJogoDaVelha } from "~/components/jogo-vela/types";
 import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 
-export const useJogaOnline = defineStore("useJogaOnline", {
-  state: () => ({
-    board: [
+export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
+  return {
+    board: ref<Array<ColJogoDaVelha[]>>([
       [{}, {}, {}],
       [{}, {}, {}],
       [{}, {}, {}],
-    ] as Array<ColJogoDaVelha[]>,
-    ganhador: undefined as ColJogoDaVelha | undefined,
-    jogadorAtual: "X" as ValorColSelecionado,
-    identicicador: "",
-    host: true,
-    conectado: false,
-  }),
-  getters: {
-    estaJogando(): boolean {
-      return this.conectado;
-    },
-  },
-  actions: {
-    async iniciarPartida() {},
-    setarJogada(event: ColJogoDaVelha) {},
-    resetar() {},
-  },
+    ]),
+    ganhador: ref<ColJogoDaVelha | undefined>(),
+    jogadorAtual: ref<ValorColSelecionado>("X"),
+    identicicador: ref(""),
+    host: ref(true),
+    conectado: ref(false),
+  };
 });

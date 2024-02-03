@@ -15,5 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GameDaOld.Infra.CrossCutting.IoC\GameDaOld.Infra.CrossCutting.IoC.csproj" />
     <ProjectReference Include="..\GameDaOld.Aplication\GameDaOld.Aplication.csproj" />
+    <ProjectReference Include="..\GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj" />
   </ItemGroup>
 </Project>

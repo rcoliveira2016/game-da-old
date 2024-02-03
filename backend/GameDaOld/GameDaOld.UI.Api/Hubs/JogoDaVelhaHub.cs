@@ -1,5 +1,6 @@
 ﻿using GameDaOld.Aplication;
 using GameDaOld.Aplication.JogoDaVelha;
+using GameDaOld.Domain.Core;
 using GameDaOld.Infra.Integration.CacheService;
 using Microsoft.AspNetCore.SignalR;
 
@@ -7,18 +8,19 @@ namespace GameDaOld.UI.Api.Hubs;
 
 public class JogoDaVelhaHub : Hub
 {
-    public readonly IJogoDaVelhaAppService _jogoDaVelhaAppService;
-    public readonly ICacheService _cacheService;
-    public JogoDaVelhaHub(IJogoDaVelhaAppService jogoDaVelhaAppService, ICacheService cacheService)
+    private readonly IJogoDaVelhaAppService _jogoDaVelhaAppService;
+    private readonly IDomainNotificationHandler _domainNotificationHandler;
+    public JogoDaVelhaHub(IJogoDaVelhaAppService jogoDaVelhaAppService, IDomainNotificationHandler domainNotificationHandler)
     {
         _jogoDaVelhaAppService = jogoDaVelhaAppService;
-        _cacheService = cacheService;
+        _domainNotificationHandler = domainNotificationHandler;
     }
 
     public async Task IniciarNovoJogo()
     {
         var identificador = Guid.NewGuid().ToString();
         _jogoDaVelhaAppService.IniciarNovoJogo(IndentificadorJogoVelhaInputModel.Create(identificador, this.Context.ConnectionId));
+        if (!await ValidarNotifiacoesDominio()) return;
         await Groups.AddToGroupAsync(this.Context.ConnectionId, identificador);
         await Clients.Group(identificador).SendAsync("JogoAberto", identificador);
     }
@@ -26,6 +28,7 @@ public class JogoDaVelhaHub : Hub
     public async Task ConectarPartida(string identificador)
     {
         _jogoDaVelhaAppService.ConectarPartida(IndentificadorJogoVelhaInputModel.Create(identificador, this.Context.ConnectionId));
+        if (!await ValidarNotifiacoesDominio()) return;
         await Groups.AddToGroupAsync(this.Context.ConnectionId, identificador);
         await Clients.Group(identificador).SendAsync("JogoIniciado", identificador);
     }
@@ -41,13 +44,22 @@ public class JogoDaVelhaHub : Hub
                 Identificador = jogoDaVelhaHubInputModel.Identificador
             }
         );
+        if(!await ValidarNotifiacoesDominio()) return;
         if (sessao == null) return;
 
         await Clients.Group(jogoDaVelhaHubInputModel.Identificador)
             .SendAsync("SetarJogada", ObterBoard(sessao), sessao.ProximoJogador().ToString().ToUpper(), sessao.ObterVencedor().ToString().ToUpper());
     }
 
-    private string[][] ObterBoard(SessaoJogoVelha? sessao)
+    private async Task<bool> ValidarNotifiacoesDominio(){
+        var erros = _domainNotificationHandler.GetNotificationsError();
+        if (!erros.Any()) return true;
+
+        await Clients.Caller.SendAsync("NotificacoesDominio", erros);
+        return false;
+    }
+
+    private string[][]? ObterBoard(SessaoJogoVelha? sessao)
     {
         if (sessao == null) return null;
         var retorno = new string[3][]{

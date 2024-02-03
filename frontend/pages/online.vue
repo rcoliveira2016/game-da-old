@@ -16,7 +16,6 @@
       :jogadorAtual="jogarOnlineStore.jogadorAtual"
       :board="jogarOnlineStore.board"
       @selecionou-celula="setarJogada"
-      @resetar="jogarOnlineStore.resetar"
     />
   </section>
 </template>
@@ -31,7 +30,7 @@ interface JogoDaVelhaHubInputModel {
   IndexColuna: number;
 }
 
-const jogarOnlineStore = useJogaOnline();
+const jogarOnlineStore = useJogaOnlineStore();
 const port = 5023;
 const connection = new HubConnectionBuilder()
   .withUrl(`http://localhost:${port}/JogoDaVelhaHub`, {
@@ -65,7 +64,6 @@ connection.on(
     ganhador: ValorColSelecionado
   ) => {
     jogarOnlineStore.jogadorAtual = jogadorProximoJogador;
-    console.log(ganhador)
     if (ganhador == "X" || ganhador == "O")
       jogarOnlineStore.ganhador = { selecionado: ganhador };
 
@@ -91,6 +89,11 @@ connection.on("JogoIniciado", (identicicador: string) => {
 connection.onclose(async () => {
   await connection.start();
 });
+
+connection.on('ErroNotificacao', (msg: string[]) => {
+  console.error(msg);
+})
+
 onMounted(() => {
   document.addEventListener("abort", (event) => {
     connection.stop();

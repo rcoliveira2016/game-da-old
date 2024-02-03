@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using GameDaOld.Aplication.JogoDaVelha;
+using GameDaOld.Domain.Core;
 using GameDaOld.Infra.Integration.CacheService;
 using static GameDaOld.Aplication.JogoVelhaHelper;
 
@@ -8,13 +9,19 @@ namespace GameDaOld.Aplication;
 public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 {
     public readonly ICacheService _cacheService;
-    public JogoDaVelhaAppService(ICacheService cacheService)
+    private readonly IDomainNotificationHandler _domainNotificationHandler;
+    public JogoDaVelhaAppService(ICacheService cacheService, IDomainNotificationHandler domainNotificationHandler)
     {
         _cacheService = cacheService;
+        _domainNotificationHandler = domainNotificationHandler;
     }
 
     public void IniciarNovoJogo(IndentificadorJogoVelhaInputModel inputModel)
     {
+        if(TentarObterSessao(inputModel.Identificador, out var _)){
+            _domainNotificationHandler.NotifyError("Jogo ja iniciado");
+        }
+
         var sessao = new SessaoJogoVelha
         {
             Identificador = inputModel.Identificador,
@@ -28,6 +35,10 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
     public void ConectarPartida(IndentificadorJogoVelhaInputModel inputModel)
     {
         if (!TentarObterSessao(inputModel.Identificador, out var sessao)) return;
+        if(sessao.Jogadores.Count>1) {
+            _domainNotificationHandler.NotifyError("Partida ja iniciada");
+            return;
+        };
 
         sessao.AdicionarJogador(eJogadorSessaoJogoVelha.O, inputModel.JogadorID);
         sessao.Status = eStatusSessaoJogoVelha.Iniciando;
