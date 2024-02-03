@@ -16,30 +16,35 @@ public class JogoDaVelhaHub : Hub
     }
 
     public async Task IniciarNovoJogo()
-    {        
+    {
         var identificador = Guid.NewGuid().ToString();
-        _jogoDaVelhaAppService.IniciarNovoJogo(identificador, this.Context.ConnectionId);
+        _jogoDaVelhaAppService.IniciarNovoJogo(IndentificadorJogoVelhaInputModel.Create(identificador, this.Context.ConnectionId));
         await Groups.AddToGroupAsync(this.Context.ConnectionId, identificador);
         await Clients.Group(identificador).SendAsync("JogoAberto", identificador);
     }
 
-    public async Task ConectarPartida(string identificador){
+    public async Task ConectarPartida(string identificador)
+    {
+        _jogoDaVelhaAppService.ConectarPartida(IndentificadorJogoVelhaInputModel.Create(identificador, this.Context.ConnectionId));
         await Groups.AddToGroupAsync(this.Context.ConnectionId, identificador);
-        _jogoDaVelhaAppService.ConectarPartida(identificador, this.Context.ConnectionId);
         await Clients.Group(identificador).SendAsync("JogoIniciado", identificador);
     }
 
     public async Task SetarJogada(JogoDaVelhaHubInputModel jogoDaVelhaHubInputModel)
     {
         var sessao = _jogoDaVelhaAppService.SetarJogada(
-            jogoDaVelhaHubInputModel.Identificador,
-            this.Context.ConnectionId,
-            jogoDaVelhaHubInputModel.IndexLinha,
-            jogoDaVelhaHubInputModel.IndexColuna
+            new ()
+            {
+                Coluna = jogoDaVelhaHubInputModel.IndexColuna,
+                Linha = jogoDaVelhaHubInputModel.IndexLinha,
+                JogadorID = this.Context.ConnectionId,
+                Identificador = jogoDaVelhaHubInputModel.Identificador
+            }
         );
-        if(sessao==null) return;
+        if (sessao == null) return;
+
         await Clients.Group(jogoDaVelhaHubInputModel.Identificador)
-        .SendAsync("SetarJogada", ObterBoard(sessao), sessao.ProximoJogador().ToString().ToUpper(), sessao.ObterVencedor()?.ToString().ToUpper());
+            .SendAsync("SetarJogada", ObterBoard(sessao), sessao.ProximoJogador().ToString().ToUpper(), sessao.ObterVencedor().ToString().ToUpper());
     }
 
     private string[][] ObterBoard(SessaoJogoVelha? sessao)
@@ -55,7 +60,7 @@ public class JogoDaVelhaHub : Hub
             for (int j = 0; j < sessao.Tabuleiro.GetLength(1); j++)
             {
                 var valor = sessao.Tabuleiro[i, j];
-                if(valor == eJogadorSessaoJogoVelha.Nenhum) continue;
+                if (valor == eJogadorSessaoJogoVelha.Nenhum) continue;
                 retorno[i][j] = sessao.Tabuleiro[i, j].ToString().ToUpper();
             }
         }

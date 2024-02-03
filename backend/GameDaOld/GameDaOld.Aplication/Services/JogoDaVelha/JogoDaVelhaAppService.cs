@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using GameDaOld.Aplication.JogoDaVelha;
 using GameDaOld.Infra.Integration.CacheService;
+using static GameDaOld.Aplication.JogoVelhaHelper;
 
 namespace GameDaOld.Aplication;
 
@@ -12,25 +13,62 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
         _cacheService = cacheService;
     }
 
-    public void IniciarNovoJogo(string identificador, string jogadorID)
+    public void IniciarNovoJogo(IndentificadorJogoVelhaInputModel inputModel)
     {
         var sessao = new SessaoJogoVelha
         {
-            Identificador = identificador,
+            Identificador = inputModel.Identificador,
             Status = eStatusSessaoJogoVelha.Iniciando,
             JogadorAtual = eJogadorSessaoJogoVelha.X
-        }.AdicionarJogador(eJogadorSessaoJogoVelha.X, jogadorID);
+        }.AdicionarJogador(eJogadorSessaoJogoVelha.X, inputModel.JogadorID);
 
         CommitSessao(sessao);
     }
 
-    public void ConectarPartida(string identificador, string jogadorID)
+    public void ConectarPartida(IndentificadorJogoVelhaInputModel inputModel)
     {
-        var sessao = ObterSessao(identificador);
-        if (sessao == null) return;
-        sessao.AdicionarJogador(eJogadorSessaoJogoVelha.O, jogadorID);
+        if (!TentarObterSessao(inputModel.Identificador, out var sessao)) return;
+
+        sessao.AdicionarJogador(eJogadorSessaoJogoVelha.O, inputModel.JogadorID);
         sessao.Status = eStatusSessaoJogoVelha.Iniciando;
         CommitSessao(sessao);
+    }
+
+    public SessaoJogoVelha? SetarJogada(SetarJogadaInputModel inputModel)
+    {
+        if (!TentarObterSessao(inputModel.Identificador, out var sessao)) return null;
+        if (sessao.Status == eStatusSessaoJogoVelha.EmAndamento)
+            return null;
+        CommitStatusSessao(sessao, eStatusSessaoJogoVelha.EmAndamento);
+
+        var jogadorNovo = sessao.ObterTipoJogador(inputModel.JogadorID);
+        if (!ValidarJogada(sessao, jogadorNovo, inputModel))
+        {
+            CommitStatusSessao(sessao, eStatusSessaoJogoVelha.FinalizadoJogada);
+            return null;
+        }
+
+        sessao.JogadorAtual = jogadorNovo;
+        sessao.NumerosDeJogadas++;
+        sessao.SetarJogadaTabuleiro(inputModel.Linha, inputModel.Coluna, jogadorNovo);
+
+        sessao.Status = eStatusSessaoJogoVelha.FinalizadoJogada;
+        CommitSessao(sessao);
+        return sessao;
+    }
+
+    private bool ValidarJogada(SessaoJogoVelha sessao, eJogadorSessaoJogoVelha jogadorNovo, SetarJogadaInputModel inputModel)
+    {
+        if (jogadorNovo == sessao.JogadorAtual && sessao.NumerosDeJogadas > 1) return false;
+        if (sessao.ObterVencedor() != eVencedorSessaoJogoVelha.JogoEmAndamento) return false;
+
+        return true;
+    }
+
+    private void CommitStatusSessao(SessaoJogoVelha sessaoJogoVelha, eStatusSessaoJogoVelha status)
+    {
+        sessaoJogoVelha.Status = status;
+        CommitSessao(sessaoJogoVelha);
     }
 
     private void CommitSessao(SessaoJogoVelha sessaoJogoVelha)
@@ -47,28 +85,5 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
     {
         sessaoJogoVelha = ObterSessao(identificador);
         return sessaoJogoVelha != null;
-    }
-
-    public SessaoJogoVelha? SetarJogada(string identificador, string jogadorID, int linha, int coluna)
-    {
-        var sessao = ObterSessao(identificador);
-        if(sessao.Status == eStatusSessaoJogoVelha.EmAndamento)
-            return null;
-        
-        var jogadorNovo = sessao.ObterTipoJogador(jogadorID);
-        if (jogadorNovo == sessao.JogadorAtual && sessao.NumerosDeJogadas > 1) return null;
-        if (sessao.ObterVencedor().HasValue) return null;
-
-        sessao.JogadorAtual = jogadorNovo;
-        sessao.Status = eStatusSessaoJogoVelha.EmAndamento;
-        sessao.NumerosDeJogadas++;
-        CommitSessao(sessao);
-
-        if (sessao.Tabuleiro[linha, coluna] == eJogadorSessaoJogoVelha.Nenhum)
-            sessao.Tabuleiro[linha, coluna] = sessao.ObterTipoJogador(jogadorID);
-
-        sessao.Status = eStatusSessaoJogoVelha.FinalizadoJogada;
-        CommitSessao(sessao);
-        return sessao;
     }
 }

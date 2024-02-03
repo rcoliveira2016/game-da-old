@@ -1,4 +1,5 @@
 ﻿using MessagePack;
+using static GameDaOld.Aplication.JogoVelhaHelper;
 
 namespace GameDaOld.Aplication;
 [MessagePackObject]
@@ -29,58 +30,16 @@ public class SessaoJogoVelha
     public eJogadorSessaoJogoVelha ProximoJogador() =>
         this.JogadorAtual == eJogadorSessaoJogoVelha.X ? eJogadorSessaoJogoVelha.O : eJogadorSessaoJogoVelha.X;
 
-    public eVencedorSessaoJogoVelha? ObterVencedor()
+    public void SetarJogadaTabuleiro(int linha, int coluna, eJogadorSessaoJogoVelha jogador)
     {
-        for (int i = 0; i < 3; i++)
-        {
-            if (Tabuleiro[i,0] != eJogadorSessaoJogoVelha.Nenhum &&
-                Tabuleiro[i,0] == Tabuleiro[i,1] &&
-                Tabuleiro[i,1] == Tabuleiro[i,2])
-            {
-                return Tabuleiro[i,0] == eJogadorSessaoJogoVelha.X? eVencedorSessaoJogoVelha.X : eVencedorSessaoJogoVelha.O;
-            }
-
-            if (Tabuleiro[0,i] != eJogadorSessaoJogoVelha.Nenhum &&
-                Tabuleiro[0,i] == Tabuleiro[1,i] &&
-                Tabuleiro[1,i] == Tabuleiro[2,i])
-            {
-                return Tabuleiro[0,i] == eJogadorSessaoJogoVelha.X ? eVencedorSessaoJogoVelha.X : eVencedorSessaoJogoVelha.O;
-            }
-        }
-
-        if (Tabuleiro[0,0] != eJogadorSessaoJogoVelha.Nenhum &&
-            Tabuleiro[0,0] == Tabuleiro[1,1] &&
-            Tabuleiro[1,1] == Tabuleiro[2,2])
-        {
-            return Tabuleiro[0,0] == eJogadorSessaoJogoVelha.X ? eVencedorSessaoJogoVelha.X : eVencedorSessaoJogoVelha.O;
-        }
-
-        if (Tabuleiro[0,2] != eJogadorSessaoJogoVelha.Nenhum &&
-            Tabuleiro[0,2] == Tabuleiro[1,1] &&
-            Tabuleiro[1,1] == Tabuleiro[2,0])
-        {
-            return Tabuleiro[0,2] == eJogadorSessaoJogoVelha.X ? eVencedorSessaoJogoVelha.X : eVencedorSessaoJogoVelha.O;
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                if (Tabuleiro[i,j] == eJogadorSessaoJogoVelha.Nenhum)
-                {
-                    return null;
-                }
-            }
-        }
-
-        return eVencedorSessaoJogoVelha.Empate; // empate
+        if(this.Tabuleiro[linha, coluna] == eJogadorSessaoJogoVelha.Nenhum)
+            this.Tabuleiro[linha, coluna] = jogador;
     }
-}
-public enum eVencedorSessaoJogoVelha
-{
-    Empate,
-    X,
-    O
+
+    public eVencedorSessaoJogoVelha ObterVencedor()
+    {
+        return JogoVelhaHelper.ObterVencedor(this.Tabuleiro);
+    }
 }
 public enum eJogadorSessaoJogoVelha
 {

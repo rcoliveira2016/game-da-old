@@ -5,6 +5,6 @@ namespace GameDaOld.UI.Api;
 public class JogoDaVelhaHubInputModel
 {
     public string Identificador { get; set; } = string.Empty;
-    public int IndexLinha { get; set; }
-    public int IndexColuna { get; set; }
+    public short IndexLinha { get; set; }
+    public short IndexColuna { get; set; }
 }
