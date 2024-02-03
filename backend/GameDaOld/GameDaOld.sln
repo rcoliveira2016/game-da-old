@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Infra.CrossCuttin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Infra.Integration.CacheService", "GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj", "{2B7DC93A-A544-4874-9515-5B36BD49D00A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Domain.Core", "GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj", "{5EA73FAD-074C-408E-85C8-B67C609441B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B7DC93A-A544-4874-9515-5B36BD49D00A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

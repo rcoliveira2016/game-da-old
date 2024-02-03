@@ -10,5 +10,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GameDaOld.Aplication\GameDaOld.Aplication.csproj" />
     <ProjectReference Include="..\GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj" />
+    <ProjectReference Include="..\GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj" />
   </ItemGroup>
 </Project>
