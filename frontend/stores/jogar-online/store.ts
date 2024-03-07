@@ -41,7 +41,7 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
 
     const runtimeConfig = useRuntimeConfig();
     connection = new HubConnectionBuilder()
-      .withUrl(runtimeConfig.public.APP_URL_SIGNALR, {
+      .withUrl(runtimeConfig.public.urlSignalr, {
         transport: HttpTransportType.WebSockets,
       })
       .build();

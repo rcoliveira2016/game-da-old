@@ -3,6 +3,7 @@ ARG NODE_VERSION=18.14.2
 FROM node:${NODE_VERSION}-slim as base
 
 ARG PORT=3000
+ARG NUXT_PUBLIC_URL_SIGNALR=
 
 ENV NODE_ENV=production
 
@@ -23,6 +24,7 @@ RUN npm prune
 FROM base
 
 ENV PORT=$PORT
+ENV NUXT_PUBLIC_URL_SIGNALR=$APP_URL_SIGNALR
 
 COPY --from=build /src/.output /src/.output
 # Optional, only needed if you rely on unbundled dependencies

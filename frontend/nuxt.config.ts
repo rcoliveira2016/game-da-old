@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt"],
   runtimeConfig: {
     public: {
-      APP_URL_SIGNALR: process.env.APP_URL_SIGNALR,
+      urlSignalr:''
     },
   },
 });
