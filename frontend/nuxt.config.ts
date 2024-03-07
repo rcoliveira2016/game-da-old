@@ -2,19 +2,20 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1',
-      title: 'Jogo da velha',
-    }
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+      title: "Jogo da velha",
+    },
   },
   devtools: { enabled: true },
-  css: [
-    'assets/style/app.css'
-  ],
+  css: ["assets/style/app.css"],
   imports: {
-    dirs: [
-      'composables/**'
-    ]
+    dirs: ["composables/**"],
   },
-  modules: ['@pinia/nuxt'],
-})
+  modules: ["@pinia/nuxt"],
+  runtimeConfig: {
+    public: {
+      APP_URL_SIGNALR: process.env.APP_URL_SIGNALR,
+    },
+  },
+});

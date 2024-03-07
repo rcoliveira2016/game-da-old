@@ -39,9 +39,9 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
   const signalREventsHub = () => {
     if (connection) return connection;
 
-    const port = 5023;
+    const runtimeConfig = useRuntimeConfig();
     connection = new HubConnectionBuilder()
-      .withUrl(`http://localhost:${port}/JogoDaVelhaHub`, {
+      .withUrl(runtimeConfig.public.APP_URL_SIGNALR, {
         transport: HttpTransportType.WebSockets,
       })
       .build();

@@ -10,13 +10,16 @@ builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: SignalROrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:3000");
-                          policy.WithMethods("GET", "POST");
-                          policy.AllowAnyHeader();
-                          policy.AllowCredentials();
-                      });
+    policy =>
+    {
+        var urlOrigins = builder.Configuration.GetValue<string>("SignalAllowedOrigins");
+        if(!string.IsNullOrEmpty(urlOrigins))
+            policy.WithOrigins(urlOrigins);
+
+        policy.WithMethods("GET", "POST");
+        policy.AllowAnyHeader();
+        policy.AllowCredentials();
+    });
 });
 
 builder.Services.AddInjecoesDepedencias();
@@ -26,8 +29,11 @@ var app = builder.Build();
 
 app.UseRouting();
 app.UseCors(SignalROrigins);
-app.MapGet("/", () => "Hello World!");
-app.MapHub<JogoDaVelhaHub>("/JogoDaVelhaHub", opt=>{
+
+app.MapGet("/", () => Results.Ok());
+
+app.MapHub<JogoDaVelhaHub>("/JogoDaVelhaHub", opt =>
+{
     opt.Transports = HttpTransportType.WebSockets;
 });
 

@@ -1,5 +1,6 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using GameDaOld.Aplication.JogoDaVelha;
+﻿using GameDaOld.Aplication.JogoDaVelha;
+using GameDaOld.Aplication.Services.JogoDaVelha.InputModel;
+using GameDaOld.Aplication.Services.JogoDaVelha.OutputModel;
 using GameDaOld.Domain.Core;
 using GameDaOld.Infra.Integration.CacheService;
 using static GameDaOld.Aplication.JogoVelhaHelper;
@@ -16,20 +17,20 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
         _domainNotificationHandler = domainNotificationHandler;
     }
 
-    public void IniciarNovoJogo(IndentificadorJogoVelhaInputModel inputModel)
+    public SessaoJogoVelha? IniciarNovoJogo(IniciarJogoVelhaInputModel inputModel)
     {
-        if(TentarObterSessao(inputModel.Identificador, out var _)){
-            _domainNotificationHandler.NotifyError("Jogo ja iniciado");
-        }
+        var identificador = Guid.NewGuid().ToString();
 
         var sessao = new SessaoJogoVelha
         {
-            Identificador = inputModel.Identificador,
+            Identificador = identificador,
             Status = eStatusSessaoJogoVelha.Iniciando,
             JogadorAtual = eJogadorSessaoJogoVelha.X
         }.AdicionarJogador(eJogadorSessaoJogoVelha.X, inputModel.JogadorID);
 
         CommitSessao(sessao);
+
+        return sessao;
     }
 
     public void ConectarPartida(IndentificadorJogoVelhaInputModel inputModel)
@@ -45,7 +46,7 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
         CommitSessao(sessao);
     }
 
-    public SessaoJogoVelha? SetarJogada(SetarJogadaInputModel inputModel)
+    public JogadaSetadaOutputModel? SetarJogada(SetarJogadaInputModel inputModel)
     {
         if (!TentarObterSessao(inputModel.Identificador, out var sessao)) return null;
         if (sessao.Status == eStatusSessaoJogoVelha.EmAndamento)
@@ -65,7 +66,7 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 
         sessao.Status = eStatusSessaoJogoVelha.FinalizadoJogada;
         CommitSessao(sessao);
-        return sessao;
+        return JogadaSetadaOutputModel.Create(sessao);
     }
 
     private bool ValidarJogada(SessaoJogoVelha sessao, eJogadorSessaoJogoVelha jogadorNovo, SetarJogadaInputModel inputModel)
