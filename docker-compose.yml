@@ -4,6 +4,7 @@ services:
   redis:
     image: redis:alpine
     command: redis-server
+    hostname: redies
     ports:
       - "6379:6379"
 
@@ -12,7 +13,8 @@ services:
     build:
       context: ./backend/GameDaOld
       dockerfile: ./GameDaOld.UI.Api/Dockerfile
-    #environment:
+    environment:
+      - ConnectionStrings__Redis=redis:6379
       #- ASPNETCORE_URLS=http://+:5023
     ports:
       - "5023:8080"
