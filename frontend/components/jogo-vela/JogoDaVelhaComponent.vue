@@ -22,25 +22,39 @@ const prop = defineProps({
 </script>
 <template>
   <div class="container" tabindex="0" atl="tabuleiro do jogo da velha">
-    <div>Jogador Atual: {{ jogadorAtual }}</div>
-    <div v-if="ganhador">
-      <div>Ganhador: {{ ganhador.selecionado }}</div>
-    </div>
-    <div><BtnComponent @click="emit('resetar')">Resetar</BtnComponent></div>
+    <header class="cabecalho">
+      <div class="status-partida" v-if="ganhador">
+        <div>Ganhador:
+          <JogoVelaIdentificadorJogador :jogador="ganhador.selecionado" />
+        </div>
+      </div>
+      <div class="status-partida" v-else>Jogador Atual:
+        <JogoVelaIdentificadorJogador :jogador="jogadorAtual" />
+      </div>
+      <BtnComponent @click="emit('resetar')">Resetar</BtnComponent>
+    </header>
     <div class="container-board">
       <BoardJogoDaVelha :board="prop.board" @selecionou-celula="emit('selecionou-celula', $event)" />
-    </div>  
+    </div>
   </div>
 </template>
 <style scoped>
 .container {
-  font-size: 16px;
-  padding: 10px;
+  font-size: 1rem;
+  padding: .6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 400px;
+  width: 18rem;
   border: 1px solid #000;
   border-radius: 0.4rem;
+  position: relative;
+}
+
+.cabecalho {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

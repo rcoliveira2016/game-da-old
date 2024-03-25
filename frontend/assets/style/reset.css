@@ -91,3 +91,7 @@ video {
 }
 
 /* Add more reset styles as needed */
+
+strong {
+    font-weight: bold;
+}

@@ -13,6 +13,28 @@ a {
   color: var(--color-primary);
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
+}
+
+.texto-jogador-x {
+  color: var(--cor-jogador-x);
+}
+
+.texto-jogador-o {
+  color: var(--cor-jogador-o);
+}
+
+.bg-jogador-x {
+  background-color: var(--cor-jogador-x);
+}
+
+.bg-jogador-o {
+  background-color: var(--cor-jogador-o);
+}
+
+.justify-space-between {
+  display: flex;
+  justify-content: space-between;
 }

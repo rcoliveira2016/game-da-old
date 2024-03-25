@@ -80,9 +80,9 @@ onMounted(() => {
 
 }
 .col--selecionado-x {
-  background: rgb(170, 107, 107);
+  background: var(--cor-jogador-x);
 }
 .col--selecionado-o {
-  background: rgb(90, 81, 126);
+  background: var(--cor-jogador-o);
 }
 </style>
