@@ -12,7 +12,7 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
 
   const ganhador = ref<ColJogoDaVelha | undefined>();
   const jogadorAtual = ref<ValorColSelecionado>("X");
-  const identicicador = ref("");
+  const identificador = ref("");
   const host = ref<boolean|undefined>(undefined);
   const conectado = ref(false);
 
@@ -25,12 +25,17 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
 
     ganhador.value= undefined;
     jogadorAtual.value = "X";
-    identicicador.value = "";
+    identificador.value = "";
     host.value = undefined;
     conectado.value = false;
     
     if (connection && connection.state === HubConnectionState.Connected) {
       connection.stop();
+    }
+
+    const identificadorRouter = useRoute().query.id;
+    if(identificadorRouter) {
+      identificador.value = identificadorRouter as string
     }
   }
 
@@ -41,12 +46,16 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
 
   const conectarPartida = async () => {
     await signalREventsHub().start();
-    await signalREventsHub().invoke("ConectarPartida", identicicador.value);
+    await signalREventsHub().invoke("ConectarPartida", identificador.value);
   };
 
   const setarJogada = async (event: ColSelecionadoEvent) => {
+    const celulaJogada = board.value[event.indexRow][event.indexCol];
+    console.log(celulaJogada);
+    if (!!celulaJogada?.selecionado) return;
+
     await signalREventsHub().invoke("SetarJogada", {
-      Identificador: identicicador.value,
+      Identificador: identificador.value,
       IndexColuna: event.indexCol,
       IndexLinha: event.indexRow,
     } satisfies JogoDaVelhaHubInputModel);
@@ -88,16 +97,15 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
       }
     );
 
-    connection.on("JogoAberto", (identificador: string) => {
-      identicicador.value = identificador;
+    connection.on("JogoAberto", (identificadorServidor: string) => {
+      identificador.value = identificadorServidor;
       host.value = true;
     });
 
-    connection.on("JogoIniciado", (identicicador: string) => {
-      if (host.value === undefined)
-        host.value = false;
+    connection.on("JogoIniciado", (identificadorServidor: string) => {
+      if (host.value === undefined) host.value = false;
 
-      identicicador = identicicador;
+      identificador.value = identificadorServidor;
       conectado.value = true;
     });
 
@@ -112,28 +120,37 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
     return connection;
   };
 
-
-  
   onMounted(() => {
     document.addEventListener("abort", (event) => {
       signalREventsHub().stop();
     });
   });
 
+  onUnmounted(() => {
+    signalREventsHub().stop();
+  })
+
   onBeforeMount(() => {
     signalREventsHub();
   })
+
+
+  const copiarLink = () => {
+    if (!identificador.value) return;
+    navigator.clipboard.writeText(`${window.location.href}?id=${identificador.value}`);
+  }
 
   return {
     board,
     ganhador,
     jogadorAtual,
-    identicicador,
+    identificador,
     host,
     conectado,
     setarJogada,
     iniciarPartida,
     conectarPartida,
     resetarTela,
+    copiarLink,
   };
 });

@@ -36,7 +36,11 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
     public void ConectarPartida(IndentificadorJogoVelhaInputModel inputModel)
     {
         if (!Validar(inputModel)) return;
-        if (!TentarObterSessao(inputModel.Identificador, out var sessao)) return;
+        if (!TentarObterSessao(inputModel.Identificador, out var sessao)) 
+        { 
+            _domainNotificationHandler.NotifyError("A partida não foi iniciada");
+            return; 
+        }
         if(sessao.Jogadores.Count>1) {
             _domainNotificationHandler.NotifyError("Partida ja iniciada");
             return;
