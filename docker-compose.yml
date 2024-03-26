@@ -8,8 +8,8 @@ services:
     ports:
       - "6379:6379"
 
-  gamedaold_ui_api:
-    image: gamedaolduiapi
+  api:
+    image: api
     build:
       context: ./backend/GameDaOld
       dockerfile: ./GameDaOld.UI.Api/Dockerfile
