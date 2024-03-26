@@ -1,16 +1,26 @@
 <template>
   <section>
-    <p><input type="checkbox" v-model="jogarOnlineStore.host" /> host</p>
-    <p v-if="jogarOnlineStore.host">
-      <BtnComponent @click="jogarOnlineStore.iniciarPartida">Gerar novo Sessao</BtnComponent>
-      <InputText :model-value="jogarOnlineStore.identicicador" />
-    </p>
-    <p v-else>
-      <InputText v-model="jogarOnlineStore.identicicador" />
-      <BtnComponent @click="jogarOnlineStore.conectarPartida">concetar partida</BtnComponent>
-    </p>
+    <div class="conctar-partida">
+      <BtnComponent
+        v-if="!jogarOnlineStore.host"
+        :disabled="jogarOnlineStore.host === false"
+        @click="jogarOnlineStore.conectarPartida"
+        >concetar partida</BtnComponent
+      >
+      <BtnComponent
+        v-if="jogarOnlineStore.host !== false"
+        :disabled="!!jogarOnlineStore.identicicador"
+        @click="jogarOnlineStore.iniciarPartida"
+        >inciar partida</BtnComponent
+      >
+      <InputText
+        v-if="!jogarOnlineStore.conectado"
+        v-model="jogarOnlineStore.identicicador"
+        :disabled="jogarOnlineStore.host"
+      />
+    </div>
   </section>
-  <section v-if="jogarOnlineStore.conectado">
+  <section class="canvas-jogo-velha" v-if="jogarOnlineStore.conectado">
     <JogoVelaJogoDaVelhaComponent
       :ganhador="jogarOnlineStore.ganhador"
       :jogadorAtual="jogarOnlineStore.jogadorAtual"
@@ -20,7 +30,18 @@
   </section>
 </template>
 <script setup lang="ts">
-import { useJogaOnlineStore } from '~/stores/jogar-online/store';
+import { useJogaOnlineStore } from "~/stores/jogar-online/store";
 
 const jogarOnlineStore = useJogaOnlineStore();
+jogarOnlineStore.resetarTela();
 </script>
+<style scoped>
+.conctar-partida {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.canvas-jogo-velha {
+  margin-top: var(--spacing-xl);
+}
+</style>

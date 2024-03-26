@@ -1,4 +1,4 @@
-import { HttpTransportType, HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
 import type { ColJogoDaVelha, ColSelecionadoEvent } from "~/components/jogo-vela/types";
 import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
 import type { JogoDaVelhaHubInputModel } from "./types";
@@ -13,8 +13,26 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
   const ganhador = ref<ColJogoDaVelha | undefined>();
   const jogadorAtual = ref<ValorColSelecionado>("X");
   const identicicador = ref("");
-  const host = ref(true);
+  const host = ref<boolean|undefined>(undefined);
   const conectado = ref(false);
+
+  const resetarTela = () => {
+    board.value = [
+      [{}, {}, {}],
+      [{}, {}, {}],
+      [{}, {}, {}],
+    ];
+
+    ganhador.value= undefined;
+    jogadorAtual.value = "X";
+    identicicador.value = "";
+    host.value = undefined;
+    conectado.value = false;
+    
+    if (connection && connection.state === HubConnectionState.Connected) {
+      connection.stop();
+    }
+  }
 
   const iniciarPartida = async () => {
     await signalREventsHub().start();
@@ -36,10 +54,13 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
   
 
   let connection: HubConnection | undefined = undefined;
-  const signalREventsHub = () => {
-    if (connection) return connection;
+  const signalREventsHub = (disconectar = false) => {
+    if (connection) {
+      return connection;
+    }
 
     const runtimeConfig = useRuntimeConfig();
+    console.log(runtimeConfig.public);
     connection = new HubConnectionBuilder()
       .withUrl(runtimeConfig.public.urlSignalr, {
         transport: HttpTransportType.WebSockets,
@@ -69,9 +90,13 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
 
     connection.on("JogoAberto", (identificador: string) => {
       identicicador.value = identificador;
+      host.value = true;
     });
 
     connection.on("JogoIniciado", (identicicador: string) => {
+      if (host.value === undefined)
+        host.value = false;
+
       identicicador = identicicador;
       conectado.value = true;
     });
@@ -108,6 +133,7 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
     conectado,
     setarJogada,
     iniciarPartida,
-    conectarPartida
+    conectarPartida,
+    resetarTela,
   };
 });
