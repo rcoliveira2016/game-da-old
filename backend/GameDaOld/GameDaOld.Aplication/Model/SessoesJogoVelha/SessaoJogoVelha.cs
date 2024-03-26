@@ -16,7 +16,7 @@ public class SessaoJogoVelha
     [Key(4)]
     public IDictionary<eJogadorSessaoJogoVelha, string> Jogadores { get; set; } = new Dictionary<eJogadorSessaoJogoVelha, string>();
     [Key(5)]
-    public short NumerosDeJogadas { get; set; } = 1;
+    public short NumerosDeJogadas { get; set; } = 0;
 
     public SessaoJogoVelha AdicionarJogador(eJogadorSessaoJogoVelha jogador, string id)
     {
@@ -30,15 +30,20 @@ public class SessaoJogoVelha
     public eJogadorSessaoJogoVelha ProximoJogador() =>
         this.JogadorAtual == eJogadorSessaoJogoVelha.X ? eJogadorSessaoJogoVelha.O : eJogadorSessaoJogoVelha.X;
 
-    public void SetarJogadaTabuleiro(int linha, int coluna, eJogadorSessaoJogoVelha jogador)
+    public void SetarJogadaTabuleiro(short linha, short coluna, eJogadorSessaoJogoVelha jogador)
     {
-        if(this.Tabuleiro[linha, coluna] == eJogadorSessaoJogoVelha.Nenhum)
+        if(CelulaEstaVazio(linha, coluna))
             this.Tabuleiro[linha, coluna] = jogador;
     }
 
     public eVencedorSessaoJogoVelha ObterVencedor()
     {
         return JogoVelhaHelper.ObterVencedor(this.Tabuleiro);
+    }
+
+    internal bool CelulaEstaVazio(short linha, short coluna)
+    {
+        return this.Tabuleiro[linha, coluna] == eJogadorSessaoJogoVelha.Nenhum;
     }
 }
 public enum eJogadorSessaoJogoVelha

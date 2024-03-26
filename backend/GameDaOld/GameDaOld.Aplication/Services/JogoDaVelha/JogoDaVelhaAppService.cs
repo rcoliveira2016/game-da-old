@@ -35,7 +35,7 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 
     public void ConectarPartida(IndentificadorJogoVelhaInputModel inputModel)
     {
-        if (Validar(inputModel)) return;
+        if (!Validar(inputModel)) return;
         if (!TentarObterSessao(inputModel.Identificador, out var sessao)) return;
         if(sessao.Jogadores.Count>1) {
             _domainNotificationHandler.NotifyError("Partida ja iniciada");
@@ -72,7 +72,9 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 
     private bool ValidarJogada(SessaoJogoVelha sessao, eJogadorSessaoJogoVelha jogadorNovo, SetarJogadaInputModel inputModel)
     {
-        if (jogadorNovo == sessao.JogadorAtual && sessao.NumerosDeJogadas > 1) return false;
+        if (sessao.NumerosDeJogadas == 0 && jogadorNovo != sessao.JogadorAtual) return false;
+        if (sessao.NumerosDeJogadas > 0 && jogadorNovo == sessao.JogadorAtual) return false;
+        if (!sessao.CelulaEstaVazio(inputModel.Linha, inputModel.Coluna)) return false;
         if (sessao.ObterVencedor() != eVencedorSessaoJogoVelha.JogoEmAndamento) return false;
 
         return true;
