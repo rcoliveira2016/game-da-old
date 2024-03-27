@@ -18,6 +18,9 @@ const prop = defineProps({
   ganhador: {
     type: Object as PropType<ColJogoDaVelha>,
   },
+  ocultarBtnResetar: {
+    type: Boolean,
+  }
 });
 </script>
 <template>
@@ -31,7 +34,7 @@ const prop = defineProps({
       <div class="status-partida" v-else>Jogador Atual:
         <JogoVelaIdentificadorJogador :jogador="jogadorAtual" />
       </div>
-      <BtnComponent @click="emit('resetar')">Resetar</BtnComponent>
+      <BtnComponent v-if="!ocultarBtnResetar" @click="emit('resetar')">Resetar</BtnComponent>
     </header>
     <div class="container-board">
       <BoardJogoDaVelha :board="prop.board" @selecionou-celula="emit('selecionou-celula', $event)" />

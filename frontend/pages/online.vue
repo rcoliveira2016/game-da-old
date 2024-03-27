@@ -6,19 +6,19 @@
         @click="jogarOnlineStore.conectarPartida">
         Concetar partida
       </BtnComponent>
+      <BtnComponent v-if="jogarOnlineStore.host && !jogarOnlineStore.conectado" @click="jogarOnlineStore.copiarLink">
+        Copiar link
+      </BtnComponent>
       <BtnComponent v-if="jogarOnlineStore.host !== false" :disabled="!!jogarOnlineStore.identificador"
         @click="jogarOnlineStore.iniciarPartida">
         Inciar partida
-      </BtnComponent>
-      <BtnComponent v-if="jogarOnlineStore.host && !jogarOnlineStore.conectado" @click="jogarOnlineStore.copiarLink">
-        Copiar link
       </BtnComponent>
       <InputText v-if="!jogarOnlineStore.conectado" v-model="jogarOnlineStore.identificador"
         :disabled="jogarOnlineStore.host" />
     </div>
   </section>
   <section class="canvas-jogo-velha" v-if="jogarOnlineStore.conectado">
-    <JogoVelaJogoDaVelhaComponent :ganhador="jogarOnlineStore.ganhador" :jogadorAtual="jogarOnlineStore.jogadorAtual"
+    <JogoVelaJogoDaVelhaComponent ocultar-btn-resetar :ganhador="jogarOnlineStore.ganhador" :jogadorAtual="jogarOnlineStore.jogadorAtual"
       :board="jogarOnlineStore.board" @selecionou-celula="jogarOnlineStore.setarJogada" />
   </section>
 </template>
