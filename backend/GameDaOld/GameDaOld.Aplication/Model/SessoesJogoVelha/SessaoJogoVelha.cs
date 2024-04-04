@@ -45,6 +45,16 @@ public class SessaoJogoVelha
     {
         return this.Tabuleiro[linha, coluna] == eJogadorSessaoJogoVelha.Nenhum;
     }
+
+    internal bool ValidarJogada(short linha, short coluna, eJogadorSessaoJogoVelha jogadorNovo)
+    {
+        if (NumerosDeJogadas == 0 && jogadorNovo != JogadorAtual) return false;
+        if (NumerosDeJogadas > 0 && jogadorNovo == JogadorAtual) return false;
+        if (!CelulaEstaVazio(linha, coluna)) return false;
+        if (ObterVencedor() != eVencedorSessaoJogoVelha.JogoEmAndamento) return false;
+
+        return true;
+    }
 }
 public enum eJogadorSessaoJogoVelha
 {

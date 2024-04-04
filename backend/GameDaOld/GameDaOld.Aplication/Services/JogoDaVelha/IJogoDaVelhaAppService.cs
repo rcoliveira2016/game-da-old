@@ -8,4 +8,5 @@ public interface IJogoDaVelhaAppService
     void ConectarPartida(IndentificadorJogoVelhaInputModel inputModel);
     SessaoJogoVelha? IniciarNovoJogo(IniciarJogoVelhaInputModel inputModel);
     JogadaSetadaOutputModel? SetarJogada(SetarJogadaInputModel inputModel);
+    EncerrarJogoOutputModel? EncerrarJogo(string identificador);
 }

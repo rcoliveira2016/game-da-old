@@ -9,6 +9,7 @@ namespace GameDaOld.Aplication;
 
 public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 {
+    private string _namespaceKeyIndentificadorSeesao = "IndentificadorSessao";
     public readonly ICacheService _cacheService;
     private readonly IDomainNotificationHandler _domainNotificationHandler;
     public JogoDaVelhaAppService(ICacheService cacheService, IDomainNotificationHandler domainNotificationHandler)
@@ -76,12 +77,7 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 
     private bool ValidarJogada(SessaoJogoVelha sessao, eJogadorSessaoJogoVelha jogadorNovo, SetarJogadaInputModel inputModel)
     {
-        if (sessao.NumerosDeJogadas == 0 && jogadorNovo != sessao.JogadorAtual) return false;
-        if (sessao.NumerosDeJogadas > 0 && jogadorNovo == sessao.JogadorAtual) return false;
-        if (!sessao.CelulaEstaVazio(inputModel.Linha, inputModel.Coluna)) return false;
-        if (sessao.ObterVencedor() != eVencedorSessaoJogoVelha.JogoEmAndamento) return false;
-
-        return true;
+        return sessao.ValidarJogada(inputModel.Linha, inputModel.Coluna, jogadorNovo);
     }
 
     private void CommitStatusSessao(SessaoJogoVelha sessaoJogoVelha, eStatusSessaoJogoVelha status)
@@ -92,12 +88,17 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 
     private void CommitSessao(SessaoJogoVelha sessaoJogoVelha)
     {
-        _cacheService.SetSerializable(sessaoJogoVelha.Identificador, sessaoJogoVelha);
+        _cacheService.SetSerializable(ObterCacheKeyIndentificador(sessaoJogoVelha.Identificador), sessaoJogoVelha);
     }
 
     private SessaoJogoVelha ObterSessao(string identificador)
     {
-        return _cacheService.GetSerializable<SessaoJogoVelha>(identificador);
+        return _cacheService.GetSerializable<SessaoJogoVelha>(ObterCacheKeyIndentificador(identificador));
+    }
+
+    private string ObterCacheKeyIndentificador(string identificador)
+    {
+        return $"{_namespaceKeyIndentificadorSeesao}:{identificador}";
     }
 
     private bool TentarObterSessao(string identificador, out SessaoJogoVelha sessaoJogoVelha)
@@ -121,5 +122,24 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
         }
 
         return true;
+    }
+
+    public EncerrarJogoOutputModel? EncerrarJogo(string identificador)
+    {
+        if (string.IsNullOrEmpty(identificador))
+        {
+            _domainNotificationHandler.NotifyError("Identificar está vazio");
+            return null;
+        }
+        if (!TentarObterSessao(identificador, out var sessao))
+        {
+            _domainNotificationHandler.NotifyError("A partida não foi iniciada");
+            return null;
+        }
+
+        return new()
+        {
+            IdentificadoresJogadores = sessao.Jogadores.Values.ToArray()
+        };
     }
 }
