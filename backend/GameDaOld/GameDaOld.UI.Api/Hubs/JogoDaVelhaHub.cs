@@ -59,9 +59,7 @@ public class JogoDaVelhaHub : Hub
             .Group(jogoDaVelhaHubInputModel.Identificador)
             .SendAsync(
                 methodSetarJogada,
-                outputModel.Tabuleiro, 
-                outputModel.ProximoJogador, 
-                outputModel.Vencedor);
+                outputModel);
     }
 
     private async Task<bool> ValidarNotifiacoesDominio(){

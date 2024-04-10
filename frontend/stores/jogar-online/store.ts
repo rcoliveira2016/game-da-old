@@ -1,7 +1,7 @@
 import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
 import type { ColJogoDaVelha, ColSelecionadoEvent } from "~/components/jogo-vela/types";
 import type { ValorColSelecionado } from "~/types/jogo/jogo-da-velha";
-import type { JogoDaVelhaHubInputModel } from "./types";
+import type { JogadaSetadaOutputModel, JogoDaVelhaHubInputModel } from "./types";
 
 export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
   const board = ref<Array<ColJogoDaVelha[]>>([
@@ -69,7 +69,7 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
     }
 
     const runtimeConfig = useRuntimeConfig();
-    console.log(runtimeConfig.public);
+    
     connection = new HubConnectionBuilder()
       .withUrl(runtimeConfig.public.urlSignalr, {
         transport: HttpTransportType.WebSockets,
@@ -79,16 +79,14 @@ export const useJogaOnlineStore = defineStore("useJogaOnline", () => {
     connection.on(
       "SetarJogada",
       (
-        novoBoard: Array<ValorColSelecionado[]>,
-        jogadorProximoJogador: ValorColSelecionado,
-        novoGanhador: ValorColSelecionado
+        outputModel: JogadaSetadaOutputModel,
       ) => {
-        jogadorAtual.value = jogadorProximoJogador;
-        if (novoGanhador == "X" || novoGanhador == "O")
-          ganhador.value = { selecionado: novoGanhador };
+        jogadorAtual.value = outputModel.proximoJogador;
+        if (outputModel.vencedor == "X" || outputModel.vencedor == "O")
+          ganhador.value = { selecionado: outputModel.vencedor };
 
-        for (let index = 0; index < novoBoard.length; index++) {
-          const element = novoBoard[index];
+        for (let index = 0; index < outputModel.tabuleiro.length; index++) {
+          const element = outputModel.tabuleiro[index];
           for (let j = 0; j < element.length; j++) {
             const valor = element[j];
             board.value[index][j] = { selecionado: valor };
