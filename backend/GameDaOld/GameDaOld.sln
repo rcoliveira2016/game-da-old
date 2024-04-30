@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.UI.Api", "GameDaOld.UI.Api\GameDaOld.UI.Api.csproj", "{19249820-58B6-4EA2-B4F7-CF39B64FF978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDaOld.UI.Api", "GameDaOld.UI.Api\GameDaOld.UI.Api.csproj", "{19249820-58B6-4EA2-B4F7-CF39B64FF978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Aplication", "GameDaOld.Aplication\GameDaOld.Aplication.csproj", "{6A57A61A-221B-48AD-A263-AE2255C2E8DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDaOld.Aplication", "GameDaOld.Aplication\GameDaOld.Aplication.csproj", "{6A57A61A-221B-48AD-A263-AE2255C2E8DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Infra.CrossCutting.IoC", "GameDaOld.Infra.CrossCutting.IoC\GameDaOld.Infra.CrossCutting.IoC.csproj", "{3B1172BF-AC98-4FD7-9328-39B79AB36259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDaOld.Infra.CrossCutting.IoC", "GameDaOld.Infra.CrossCutting.IoC\GameDaOld.Infra.CrossCutting.IoC.csproj", "{3B1172BF-AC98-4FD7-9328-39B79AB36259}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Infra.Integration.CacheService", "GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj", "{2B7DC93A-A544-4874-9515-5B36BD49D00A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDaOld.Infra.Integration.CacheService", "GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj", "{2B7DC93A-A544-4874-9515-5B36BD49D00A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Domain.Core", "GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj", "{5EA73FAD-074C-408E-85C8-B67C609441B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameDaOld.Domain.Core", "GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj", "{5EA73FAD-074C-408E-85C8-B67C609441B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDaOld.Domain", "GameDaOld.Domain\GameDaOld.Domain.csproj", "{64409B4C-B533-4602-8048-621D15916388}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EA73FAD-074C-408E-85C8-B67C609441B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64409B4C-B533-4602-8048-621D15916388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64409B4C-B533-4602-8048-621D15916388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64409B4C-B533-4602-8048-621D15916388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64409B4C-B533-4602-8048-621D15916388}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

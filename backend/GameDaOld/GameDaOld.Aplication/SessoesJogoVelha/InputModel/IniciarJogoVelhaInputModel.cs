@@ -1,4 +1,4 @@
-﻿namespace GameDaOld.Aplication.Services.JogoDaVelha.InputModel
+﻿namespace GameDaOld.Aplication.SessoesJogoVelha.InputModel
 {
     public class IniciarJogoVelhaInputModel
     {

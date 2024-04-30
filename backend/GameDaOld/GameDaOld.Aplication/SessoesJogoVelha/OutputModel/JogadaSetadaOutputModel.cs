@@ -1,4 +1,6 @@
-﻿namespace GameDaOld.Aplication.Services.JogoDaVelha.OutputModel
+﻿using GameDaOld.Domain.SessoesJogoVelha.Model;
+
+namespace GameDaOld.Aplication.SessoesJogoVelha.OutputModel
 {
     public class JogadaSetadaOutputModel
     {

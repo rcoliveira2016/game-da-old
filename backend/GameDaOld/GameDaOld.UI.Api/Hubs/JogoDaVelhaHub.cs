@@ -1,8 +1,6 @@
-﻿using GameDaOld.Aplication;
-using GameDaOld.Aplication.JogoDaVelha;
-using GameDaOld.Aplication.Services.JogoDaVelha.InputModel;
+﻿using GameDaOld.Aplication.SessoesJogoVelha.InputModel;
+using GameDaOld.Aplication.SessoesJogoVelha.Services;
 using GameDaOld.Domain.Core;
-using GameDaOld.Infra.Integration.CacheService;
 using Microsoft.AspNetCore.SignalR;
 
 namespace GameDaOld.UI.Api.Hubs;
@@ -26,7 +24,7 @@ public class JogoDaVelhaHub : Hub
     public async Task IniciarNovoJogo()
     {
         var sessao = _jogoDaVelhaAppService.IniciarNovoJogo(IniciarJogoVelhaInputModel.Create(this.Context.ConnectionId));
-        if (!await ValidarNotifiacoesDominio() || sessao==null) return;
+        if (!await ValidarNotifiacoesDominio() || sessao == null) return;
 
         await Groups.AddToGroupAsync(this.Context.ConnectionId, sessao.Identificador);
         await Clients.Group(sessao.Identificador).SendAsync(methodJogoAberto, sessao.Identificador);
@@ -44,7 +42,7 @@ public class JogoDaVelhaHub : Hub
     public async Task SetarJogada(JogoDaVelhaHubInputModel jogoDaVelhaHubInputModel)
     {
         var outputModel = _jogoDaVelhaAppService.SetarJogada(
-            new ()
+            new()
             {
                 Coluna = jogoDaVelhaHubInputModel.IndexColuna,
                 Linha = jogoDaVelhaHubInputModel.IndexLinha,
@@ -52,7 +50,7 @@ public class JogoDaVelhaHub : Hub
                 Identificador = jogoDaVelhaHubInputModel.Identificador
             }
         );
-        if(!await ValidarNotifiacoesDominio()) return;
+        if (!await ValidarNotifiacoesDominio()) return;
         if (outputModel == null) return;
 
         await Clients
@@ -62,7 +60,8 @@ public class JogoDaVelhaHub : Hub
                 outputModel);
     }
 
-    private async Task<bool> ValidarNotifiacoesDominio(){
+    private async Task<bool> ValidarNotifiacoesDominio()
+    {
         var erros = _domainNotificationHandler.GetNotificationsError();
         if (!erros.Any()) return true;
 

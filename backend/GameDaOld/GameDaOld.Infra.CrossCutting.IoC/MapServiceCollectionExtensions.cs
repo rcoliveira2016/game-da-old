@@ -1,6 +1,4 @@
-﻿
-using GameDaOld.Aplication;
-using GameDaOld.Aplication.JogoDaVelha;
+﻿using GameDaOld.Aplication.SessoesJogoVelha.Services;
 using GameDaOld.Domain.Core;
 using GameDaOld.Infra.Integration.CacheService;
 

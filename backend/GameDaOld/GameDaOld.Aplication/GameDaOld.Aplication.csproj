@@ -8,6 +8,7 @@
     <PackageReference Include="MessagePack" Version="2.5.140" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GameDaOld.Domain\GameDaOld.Domain.csproj" />
     <ProjectReference Include="..\GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj" />
     <ProjectReference Include="..\GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj" />
   </ItemGroup>

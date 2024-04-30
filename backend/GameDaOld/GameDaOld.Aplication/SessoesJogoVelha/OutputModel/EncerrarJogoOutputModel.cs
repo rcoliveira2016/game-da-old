@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameDaOld.Aplication.Services.JogoDaVelha.OutputModel
+namespace GameDaOld.Aplication.SessoesJogoVelha.OutputModel
 {
     public class EncerrarJogoOutputModel
     {
