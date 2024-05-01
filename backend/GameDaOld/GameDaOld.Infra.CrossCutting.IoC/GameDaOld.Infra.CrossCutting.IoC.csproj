@@ -9,6 +9,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameDaOld.Aplication\GameDaOld.Aplication.csproj" />
+    <ProjectReference Include="..\GameDaOld.Infra.Data.Repository.Cache\GameDaOld.Infra.Data.Repository.Cache.csproj" />
     <ProjectReference Include="..\GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj" />
     <ProjectReference Include="..\GameDaOld.Domain.Core\GameDaOld.Domain.Core.csproj" />
   </ItemGroup>

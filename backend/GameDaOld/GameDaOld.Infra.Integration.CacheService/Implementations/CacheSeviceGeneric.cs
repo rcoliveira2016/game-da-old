@@ -16,26 +16,26 @@ public class CacheSeviceGeneric : ICacheService
         _distributedCache = distributedCache;
     }
 
-    public void SetString(string key, string value, CacheOptions? cacheOptions = null)
+    public async Task SetStringAsync(string key, string value, CacheOptions? cacheOptions = null)
     {
-        _distributedCache.SetString(key, value, ObterCache(cacheOptions));
+        await _distributedCache.SetStringAsync(key, value, ObterCache(cacheOptions));
     }
 
-    public void SetSerializable<T>(string key, T value, CacheOptions? cacheOptions = null)
+    public async Task SetSerializableAsync<T>(string key, T value, CacheOptions? cacheOptions = null)
     {
         byte[] bytes = MessagePackSerializer.Serialize(value);
-        _distributedCache.Set(key, bytes, ObterCache(cacheOptions));
+        await _distributedCache.SetAsync(key, bytes, ObterCache(cacheOptions));
     }
 
-    public void Remove(string key)
+    public async Task RemoveAsync(string key)
     {
-        _distributedCache.Remove(key);
+        await _distributedCache.RemoveAsync(key);
     }
 
-    public T GetSerializable<T>(string key)
+    public async Task<T> GetSerializableAsync<T>(string key)
     {
-        var bytes = _distributedCache.Get(key);
-        if(bytes == null) return default;
+        var bytes = await _distributedCache.GetAsync(key);
+        if(bytes == null) return default(T);
         return MessagePackSerializer.Deserialize<T>(bytes);
     }
 

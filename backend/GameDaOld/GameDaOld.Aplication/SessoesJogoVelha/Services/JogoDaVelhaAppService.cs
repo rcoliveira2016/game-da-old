@@ -2,18 +2,18 @@
 using GameDaOld.Aplication.SessoesJogoVelha.OutputModel;
 using GameDaOld.Domain.Core;
 using GameDaOld.Domain.SessoesJogoVelha.Model;
+using GameDaOld.Domain.SessoesJogoVelha.Repository;
 using GameDaOld.Infra.Integration.CacheService;
 
 namespace GameDaOld.Aplication.SessoesJogoVelha.Services;
 
 public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 {
-    private string _namespaceKeyIndentificadorSeesao = "IndentificadorSessao";
-    public readonly ICacheService _cacheService;
+    public readonly ISessaoJogoVelhaCacheRepository _sessaoJogoVelhaCacheRepository;
     private readonly IDomainNotificationHandler _domainNotificationHandler;
-    public JogoDaVelhaAppService(ICacheService cacheService, IDomainNotificationHandler domainNotificationHandler)
+    public JogoDaVelhaAppService(ISessaoJogoVelhaCacheRepository sessaoJogoVelhaCacheRepository, IDomainNotificationHandler domainNotificationHandler)
     {
-        _cacheService = cacheService;
+        _sessaoJogoVelhaCacheRepository = sessaoJogoVelhaCacheRepository;
         _domainNotificationHandler = domainNotificationHandler;
     }
 
@@ -82,23 +82,21 @@ public class JogoDaVelhaAppService : IJogoDaVelhaAppService
 
     private void CommitSessao(SessaoJogoVelha sessaoJogoVelha)
     {
-        _cacheService.SetSerializable(ObterCacheKeyIndentificador(sessaoJogoVelha.Identificador), sessaoJogoVelha);
+        _sessaoJogoVelhaCacheRepository.Set(sessaoJogoVelha.Identificador, sessaoJogoVelha);
     }
 
-    private SessaoJogoVelha ObterSessao(string identificador)
-    {
-        return _cacheService.GetSerializable<SessaoJogoVelha>(ObterCacheKeyIndentificador(identificador));
-    }
-
-    private string ObterCacheKeyIndentificador(string identificador)
-    {
-        return $"{_namespaceKeyIndentificadorSeesao}:{identificador}";
-    }
 
     private bool TentarObterSessao(string identificador, out SessaoJogoVelha sessaoJogoVelha)
     {
-        sessaoJogoVelha = ObterSessao(identificador);
-        return sessaoJogoVelha != null;
+        var sessao = _sessaoJogoVelhaCacheRepository.Get(identificador).Result;
+        if(sessao == null)
+        {
+            sessaoJogoVelha = null;
+            return false;
+        }
+
+        sessaoJogoVelha = sessao;
+        return true;
     }
     private bool Validar(IndentificadorJogoVelhaInputModel inputModel)
     {

@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MessagePack.Annotations" Version="2.5.140" />
+    <ProjectReference Include="..\GameDaOld.Domain\GameDaOld.Domain.csproj" />
+    <ProjectReference Include="..\GameDaOld.Infra.Integration.CacheService\GameDaOld.Infra.Integration.CacheService.csproj" />
   </ItemGroup>
 
 </Project>
-
